@@ -1,12 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Nav from '../components/nav';
-import { getRandomInteger } from '../libs/number';
 import createBTree from '../libs/createBTree';
 
 function generateNodeEl(node) {
   return (
     <div className="flex flex-wrap flex-col justify-center items-center">
-      <div className="w-16 h-8 rounded bg-blue-100 text-center m-2 flex justify-center items-center">
+      <div className="w-16 h-8 rounded bg-blue-100 text-center m-2 flex justify-center items-center select-none">
         {node.data}
       </div>
       <div className="flex">
@@ -19,9 +18,18 @@ function generateNodeEl(node) {
 
 export default function IndexPage() {
   const [tree, setTree] = useState();
+  const [height, setHeight] = useState(1);
+
+  const onHeightChange = (e) => {
+    const newHeight = e.target.value;
+
+    if (newHeight > 0) {
+      setHeight(newHeight);
+    }
+  };
 
   const refreshTree = () => {
-    setTree(createBTree(getRandomInteger(1, 5)));
+    setTree(createBTree(Number(height)));
   };
 
   let treeEl = null;
@@ -29,10 +37,22 @@ export default function IndexPage() {
     treeEl = <div>{generateNodeEl(tree)}</div>;
   }
 
+  useEffect(() => {
+    if (tree) {
+      console.log(tree.toJSON());
+    }
+  }, [tree]);
+
   return (
     <div>
       <Nav />
       <main>
+        <input
+          type="number"
+          min={1}
+          value={Number(height)}
+          onChange={onHeightChange}
+        />
         <button className="btn-main" onClick={refreshTree}>
           Regenerate
         </button>
