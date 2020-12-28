@@ -1,28 +1,53 @@
 import BTreeNode from './BTreeNode';
 
+class LastValue {
+  constructor() {
+    this.lastValue = 0;
+  }
+
+  get lastVal() {
+    return this.lastValue;
+  }
+
+  add() {
+    this.lastValue += 1;
+  }
+}
+
 export default function createBTree(height) {
   if (height <= 0) {
     throw new Error(`Height must be larger than 0`);
   }
 
-  const root = new BTreeNode();
+  const root = new BTreeNode({
+    data: 1,
+  });
 
   if (height === 1) {
     return root;
   }
 
-  addTwoNodes(root, height - 1);
+  const lastVal = new LastValue();
+  lastVal.add();
+
+  addTwoNodes(root, height - 1, lastVal);
 
   return root;
 }
 
-function addTwoNodes(base, remaining) {
-  const leftChild = base.setLeftChild(new BTreeNode());
-  const rightChild = base.setRightChild(new BTreeNode());
+function addTwoNodes(baseNode, remainingHeight, lastVal) {
+  const leftChild = baseNode.setLeftChild(
+    new BTreeNode({ data: lastVal.lastVal + 1 })
+  );
+  lastVal.add();
+  const rightChild = baseNode.setRightChild(
+    new BTreeNode({ data: lastVal.lastVal + 1 })
+  );
+  lastVal.add();
 
-  const newRemaining = remaining - 1;
+  const newRemaining = remainingHeight - 1;
   if (newRemaining > 0) {
-    addTwoNodes(leftChild, newRemaining);
-    addTwoNodes(rightChild, newRemaining);
+    addTwoNodes(leftChild, newRemaining, lastVal);
+    addTwoNodes(rightChild, newRemaining, lastVal);
   }
 }

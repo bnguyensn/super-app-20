@@ -1,14 +1,43 @@
-import Nav from '../components/nav'
+import { useState } from 'react';
+import Nav from '../components/nav';
+import { getRandomInteger } from '../libs/number';
+import createBTree from '../libs/createBTree';
+
+function generateNodeEl(node) {
+  return (
+    <div className="grid grid-cols-2 grid-rows-2">
+      <div className="col-span-2 w-16 h-8 rounded bg-blue-100">{node.data}</div>
+      {node.leftChild && (
+        <div className="col-span-1">{generateNodeEl(node.leftChild)}</div>
+      )}
+      {node.rightChild && (
+        <div className="col-span-1">{generateNodeEl(node.rightChild)}</div>
+      )}
+    </div>
+  );
+}
 
 export default function IndexPage() {
+  const [tree, setTree] = useState();
+
+  const refreshTree = () => {
+    setTree(createBTree(getRandomInteger(1, 5)));
+  };
+
+  let treeEl = null;
+  if (tree) {
+    treeEl = <div>{generateNodeEl(tree)}</div>;
+  }
+
   return (
     <div>
       <Nav />
-      <div className="py-20">
-        <h1 className="text-5xl text-center text-gray-700 dark:text-gray-100">
-          Next.js + Tailwind CSS 2.0
-        </h1>
-      </div>
+      <main>
+        <button className="btn-main" onClick={refreshTree}>
+          Regenerate
+        </button>
+        {treeEl}
+      </main>
     </div>
-  )
+  );
 }
