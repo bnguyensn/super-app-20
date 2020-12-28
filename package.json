@@ -6,7 +6,8 @@
     "build": "next build",
     "start": "next start",
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
-    "lint": "eslint \"components/**/*.js\""
+    "lint": "eslint \"components/**/*.js\"",
+    "test": "jest"
   },
   "dependencies": {
     "next": "latest",

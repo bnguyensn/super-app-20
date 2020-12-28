@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
-import Nav from '../components/nav';
+import { useRef, useState } from 'react';
 import createBTree from '../libs/createBTree';
 
 function generateNodeEl(node) {
@@ -49,27 +48,24 @@ export default function IndexPage() {
     treeEl = <div>{generateNodeEl(treeJson)}</div>;
   }
 
-  useEffect(() => {
-    if (treeJson) {
-      console.log(treeJson);
-    }
-  }, [treeJson]);
-
   return (
     <div>
-      <Nav />
       <main>
-        <div className="flex">
+        <h1 className="text-4xl text-center my-4">Invert Binary Tree</h1>
+        <div className="flex justify-center items-center p-2">
+          <label htmlFor="tree-height-input">Tree height:</label>
           <input
+            id="tree-height-input"
+            className="mx-2 p-2 w-20"
             type="number"
             min={1}
             value={Number(treeHeight)}
             onChange={onHeightChange}
           />
-          <button className="btn-main" onClick={refreshTree}>
-            Regenerate
+          <button className="btn-main mx-2" onClick={refreshTree}>
+            Generate
           </button>
-          <button className="btn-main" onClick={invertTree}>
+          <button className="btn-main mx-2" onClick={invertTree}>
             Invert
           </button>
         </div>
