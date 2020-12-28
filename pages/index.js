@@ -5,14 +5,14 @@ import createBTree from '../libs/createBTree';
 
 function generateNodeEl(node) {
   return (
-    <div className="grid grid-cols-2 grid-rows-2">
-      <div className="col-span-2 w-16 h-8 rounded bg-blue-100">{node.data}</div>
-      {node.leftChild && (
-        <div className="col-span-1">{generateNodeEl(node.leftChild)}</div>
-      )}
-      {node.rightChild && (
-        <div className="col-span-1">{generateNodeEl(node.rightChild)}</div>
-      )}
+    <div className="flex flex-wrap flex-col justify-center items-center">
+      <div className="w-16 h-8 rounded bg-blue-100 text-center m-2 flex justify-center items-center">
+        {node.data}
+      </div>
+      <div className="flex">
+        {node.leftChild && generateNodeEl(node.leftChild)}
+        {node.rightChild && generateNodeEl(node.rightChild)}
+      </div>
     </div>
   );
 }
