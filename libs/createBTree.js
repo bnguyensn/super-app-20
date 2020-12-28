@@ -27,8 +27,6 @@ export default function createBTree(height) {
     return root;
   }
 
-  console.log(`BTree height > 1`);
-
   const lastVal = new LastValue();
   lastVal.add();
 

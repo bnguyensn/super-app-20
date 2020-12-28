@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Nav from '../components/nav';
 import createBTree from '../libs/createBTree';
 
@@ -17,46 +17,63 @@ function generateNodeEl(node) {
 }
 
 export default function IndexPage() {
-  const [tree, setTree] = useState();
-  const [height, setHeight] = useState(1);
+  const treeRef = useRef(null);
+  const [treeJson, setTreeJson] = useState();
+  const [treeHeight, setTreeHeight] = useState(1);
 
   const onHeightChange = (e) => {
     const newHeight = e.target.value;
 
     if (newHeight > 0) {
-      setHeight(newHeight);
+      setTreeHeight(newHeight);
     }
   };
 
   const refreshTree = () => {
-    setTree(createBTree(Number(height)));
+    if (treeHeight) {
+      const newTree = createBTree(Number(treeHeight));
+      treeRef.current = newTree;
+      setTreeJson(newTree.toJSON());
+    }
+  };
+
+  const invertTree = () => {
+    if (treeRef.current) {
+      treeRef.current.invertChildren();
+      setTreeJson(treeRef.current.toJSON());
+    }
   };
 
   let treeEl = null;
-  if (tree) {
-    treeEl = <div>{generateNodeEl(tree)}</div>;
+  if (treeJson) {
+    treeEl = <div>{generateNodeEl(treeJson)}</div>;
   }
 
   useEffect(() => {
-    if (tree) {
-      console.log(tree.toJSON());
+    if (treeJson) {
+      console.log(treeJson);
     }
-  }, [tree]);
+  }, [treeJson]);
 
   return (
     <div>
       <Nav />
       <main>
-        <input
-          type="number"
-          min={1}
-          value={Number(height)}
-          onChange={onHeightChange}
-        />
-        <button className="btn-main" onClick={refreshTree}>
-          Regenerate
-        </button>
-        {treeEl}
+        <div className="flex">
+          <input
+            type="number"
+            min={1}
+            value={Number(treeHeight)}
+            onChange={onHeightChange}
+          />
+          <button className="btn-main" onClick={refreshTree}>
+            Regenerate
+          </button>
+          <button className="btn-main" onClick={invertTree}>
+            Invert
+          </button>
+        </div>
+        <div>{treeEl}</div>
       </main>
     </div>
   );

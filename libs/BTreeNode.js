@@ -17,7 +17,7 @@ export default class BTreeNode {
 
   invertChildren() {
     if (this.leftChild && this.rightChild) {
-      const temp = this.rightChild;
+      const temp = this.leftChild;
       this.leftChild = this.rightChild;
       this.rightChild = temp;
 
