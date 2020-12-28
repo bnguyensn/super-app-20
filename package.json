@@ -4,7 +4,9 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
+    "lint": "eslint \"components/**/*.js\""
   },
   "dependencies": {
     "next": "latest",
@@ -13,9 +15,11 @@
   },
   "devDependencies": {
     "autoprefixer": "10.0.2",
+    "babel-jest": "^26.6.3",
     "eslint": "^7.16.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-react": "^7.21.5",
+    "jest": "^26.6.3",
     "postcss": "8.1.7",
     "prettier": "^2.2.1",
     "tailwindcss": "^2.0.1"
